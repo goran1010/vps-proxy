@@ -33,4 +33,5 @@ networks:
 volumes:
   # certificates and their keys
   caddy_data:
+  # Caddy's autosave of the running config; the Caddyfile stays the source
   caddy_config:
