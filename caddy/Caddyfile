@@ -1,0 +1,14 @@
+# One site block per app. Each block proxies to the alias its app's public
+# service has on the "web" network, never to a service name, since several
+# apps may call their service "server".
+# Caddy gets and renews each domain's certificate itself; the domain must
+# point at the VPS first.
+# Access logs are off (Caddy's default); add `log` to a block for an app that
+# does not log its requests itself. Caddy still logs its own errors, such as
+# a 502 while an app is down.
+
+# Atlas Univerziteta API; its server logs each request itself, with tokens
+# removed
+api.atlasuniverziteta.com {
+	reverse_proxy atlas-server:3000
+}

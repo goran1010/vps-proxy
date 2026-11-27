@@ -1,0 +1,36 @@
+services:
+  # --- Caddy: reverse proxy + automatic HTTPS for every app on the VPS ---
+  # Terminates TLS and forwards each domain to its app over the "web" network.
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # the directory, not the file: a single-file mount keeps the file it
+      # started with, and git pull replaces a changed file with a new one, so
+      # caddy reload would reload the old config
+      - ./caddy:/etc/caddy:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+    # Docker keeps container logs forever by default; cap at 5 files of 10 MB,
+    # oldest dropped first
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+networks:
+  # shared with each app's public service; created once with
+  # `docker network create web`
+  web:
+    external: true
+
+volumes:
+  # certificates and their keys
+  caddy_data:
+  caddy_config:
