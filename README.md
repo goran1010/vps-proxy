@@ -43,7 +43,7 @@ Create `web` before starting any app: every app declares it as external, and Com
 
    ```text
    <domain> {
-       reverse_proxy <app>-server:<port>
+   	reverse_proxy <app>-server:<port>
    }
    ```
 
